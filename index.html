@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="CultivAgents: a personalized multi-agent LLM system for gardening support, food sovereignty, and care-centered AI.">
+  <meta name="keywords"
+        content="CultivAgents, multi-agent systems, LLM, gardening, food sovereignty, ethnobotanical, ethics of care, AutoGen, GPT-4o">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CultivAgents — Cultivating Personalized Multi-Agent Systems Towards Food Sovereignty</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Google+Sans:wght@400;500;700&family=Noto+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    /* ---------- Tokens ---------- */
+    :root {
+      --leaf-1:    #1f5e34;
+      --leaf-2:    #2f7a3e;
+      --leaf-3:    #4f9d5a;
+      --moss:      #79a36a;
+      --sage:      #b7d3a9;
+      --earth-1:   #8c5a36;
+      --earth-2:   #c98a4b;
+      --terra:     #d97743;
+      --cream:     #fbf8f1;
+      --paper:     #ffffff;
+      --sky:       #4ea6c9;
+      --ink:       #1c2a22;
+      --ink-soft:  #46544c;
+      --ink-faint: #6a7770;
+      --border:    #e3e6df;
+      --border-soft: #eef1ea;
+      --shadow-sm: 0 1px 3px rgba(31,42,36,0.06);
+      --shadow-md: 0 6px 22px rgba(47,122,62,0.10), 0 2px 8px rgba(31,42,36,0.05);
+      --shadow-lg: 0 18px 40px rgba(47,122,62,0.16), 0 4px 14px rgba(31,42,36,0.06);
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-xl: 28px;
+      --transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease, background 0.22s ease;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: 'Noto Sans', system-ui, sans-serif;
+      color: var(--ink);
+      background: #fbfaf6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.65;
+    }
+    h1,h2,h3,h4,h5 {
+      font-family: 'Google Sans', 'Noto Sans', sans-serif;
+      letter-spacing: -0.015em;
+      color: var(--ink);
+      margin: 0;
+    }
+    a { color: var(--leaf-1); }
+    a:hover { color: var(--leaf-2); }
+
+    /* ---------- Sticky nav ---------- */
+    .topnav {
+      position: sticky; top: 0; z-index: 40;
+      backdrop-filter: saturate(180%) blur(14px);
+      -webkit-backdrop-filter: saturate(180%) blur(14px);
+      background: rgba(251,250,246,0.86);
+      border-bottom: 1px solid rgba(31,42,36,0.06);
+    }
+    .nav-inner {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      font-family: 'Google Sans', sans-serif;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      font-size: 1.05rem;
+      color: var(--leaf-1);
+    }
+    .brand-mark {
+      width: 30px; height: 30px;
+      border-radius: 9px;
+      background:
+        radial-gradient(circle at 30% 30%, #b7d3a9 0%, transparent 60%),
+        linear-gradient(135deg, var(--leaf-2), var(--leaf-1));
+      display: grid;
+      place-items: center;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(31,94,52,0.30);
+      flex-shrink: 0;
+    }
+    .brand-mark i { font-size: 14px; }
+    .nav-links {
+      display: flex;
+      gap: 2px;
+      flex-wrap: wrap;
+    }
+    .nav-links a {
+      color: var(--ink-soft);
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 8px;
+      transition: var(--transition);
+    }
+    .nav-links a:hover {
+      color: var(--leaf-1);
+      background: rgba(47,122,62,0.08);
+    }
+    .nav-links a.cta-demo {
+      color: #fff;
+      background: linear-gradient(135deg, var(--leaf-2), var(--leaf-1));
+      padding: 6px 14px;
+      box-shadow: 0 4px 12px rgba(47,122,62,0.30);
+    }
+    .nav-links a.cta-demo:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(47,122,62,0.42);
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      padding: 84px 24px 72px;
+      background:
+        radial-gradient(ellipse 900px 460px at 85% -5%, rgba(121,163,106,0.30) 0%, transparent 65%),
+        radial-gradient(ellipse 760px 460px at 5% 12%, rgba(47,122,62,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 700px 360px at 50% 110%, rgba(201,138,75,0.16) 0%, transparent 65%),
+        linear-gradient(180deg, #fdfcf6 0%, #f3f7ee 100%);
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.5;
+      background:
+        radial-gradient(2px 2px at 18% 28%, rgba(47,122,62,0.40) 50%, transparent 51%),
+        radial-gradient(2px 2px at 82% 68%, rgba(31,94,52,0.30) 50%, transparent 51%),
+        radial-gradient(1.6px 1.6px at 60% 18%, rgba(201,138,75,0.30) 50%, transparent 51%),
+        radial-gradient(1.6px 1.6px at 35% 75%, rgba(121,163,106,0.36) 50%, transparent 51%);
+      background-size: 240px 240px, 280px 280px, 200px 200px, 220px 220px;
+      animation: drift 28s linear infinite;
+    }
+    @keyframes drift {
+      0%   { background-position: 0 0, 0 0, 0 0, 0 0; }
+      100% { background-position: 240px 240px, -280px 280px, 200px -200px, -220px 220px; }
+    }
+    .hero-inner {
+      position: relative;
+      max-width: 980px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px 6px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.85);
+      border: 1px solid rgba(47,122,62,0.30);
+      color: var(--leaf-1);
+      font-family: 'Google Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.78rem;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      margin-bottom: 26px;
+      box-shadow: 0 2px 8px rgba(47,122,62,0.10);
+    }
+    .badge .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--leaf-3), var(--leaf-1));
+      box-shadow: 0 0 0 3px rgba(47,122,62,0.20);
+    }
+    .hero h1 {
+      font-family: 'Fraunces', 'Google Sans', serif;
+      font-size: clamp(2.1rem, 5vw, 3.1rem);
+      line-height: 1.15;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      max-width: 920px;
+      margin: 0 auto 14px;
+      color: var(--ink);
+    }
+    .hero h1 .accent {
+      background: linear-gradient(135deg, var(--leaf-2) 0%, var(--leaf-1) 50%, var(--earth-1) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero h1 .subtitle-em { font-style: italic; color: var(--earth-1); }
+    .tagline {
+      max-width: 760px;
+      margin: 0 auto 28px;
+      color: var(--ink-soft);
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+    .authors {
+      max-width: 880px;
+      margin: 22px auto 6px;
+      font-size: 0.98rem;
+      line-height: 1.85;
+      color: var(--ink);
+    }
+    .authors a {
+      color: var(--leaf-1);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.18s;
+    }
+    .authors a:hover { border-bottom-color: var(--leaf-1); }
+    .author-block { display: inline-block; margin: 0 3px; white-space: nowrap; }
+    .author-block sup { color: var(--earth-1); font-weight: 700; }
+    .affil-line {
+      color: var(--ink-soft);
+      font-size: 0.93rem;
+      margin: 6px auto 6px;
+    }
+    .affil-line .gt-pin { color: var(--earth-1); margin-right: 4px; }
+    .equal-line {
+      color: var(--ink-faint);
+      font-size: 0.82rem;
+      margin: 0 auto 28px;
+    }
+
+    .cta-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 6px;
+    }
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 999px;
+      font-family: 'Google Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.94rem;
+      text-decoration: none;
+      transition: var(--transition);
+      border: 1.5px solid transparent;
+      cursor: pointer;
+    }
+    .cta i { font-size: 0.95em; }
+    .cta-paper {
+      background: #1b2620;
+      color: #fff;
+      border-color: #1b2620;
+    }
+    .cta-paper:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(27,38,32,0.30);
+      background: #243029;
+      color: #fff;
+    }
+    .cta-arxiv {
+      background: #b03333;
+      color: #fff;
+      border-color: #b03333;
+    }
+    .cta-arxiv:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(176,51,51,0.32);
+      background: #952a2a;
+      color: #fff;
+    }
+    .cta-code {
+      background: #ffffff;
+      color: var(--ink);
+      border-color: var(--border);
+    }
+    .cta-code:hover {
+      transform: translateY(-2px);
+      border-color: var(--leaf-1);
+      color: var(--leaf-1);
+      box-shadow: 0 8px 20px rgba(47,122,62,0.14);
+    }
+    .cta-demo-hero {
+      background: linear-gradient(135deg, var(--leaf-3) 0%, var(--leaf-1) 100%);
+      color: #fff;
+    }
+    .cta-demo-hero:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 22px rgba(47,122,62,0.38);
+      color: #fff;
+    }
+
+    /* ---------- Section base ---------- */
+    .section {
+      padding: 5rem 1.5rem;
+    }
+    .section .container { max-width: 1100px; margin: 0 auto; width: 100%; }
+    .section-eyebrow {
+      text-align: center;
+      font-family: 'Google Sans', sans-serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-weight: 700;
+      font-size: 0.74rem;
+      color: var(--leaf-2);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.7rem, 3.3vw, 2.1rem);
+      font-weight: 700;
+      line-height: 1.22;
+      margin-bottom: 14px;
+    }
+    .section-title em {
+      font-style: italic;
+      font-family: 'Fraunces', serif;
+      color: var(--leaf-2);
+      font-weight: 600;
+    }
+    .section-lead {
+      max-width: 760px;
+      margin: 0 auto 44px;
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: 1.02rem;
+      line-height: 1.75;
+    }
+    .alt-bg {
+      background: linear-gradient(180deg, #f6faf2 0%, #ffffff 100%);
+      border-top: 1px solid var(--border-soft);
+      border-bottom: 1px solid var(--border-soft);
+    }
+    .deep-bg {
+      background:
+        radial-gradient(ellipse 700px 360px at 100% 0%, rgba(121,163,106,0.20) 0%, transparent 60%),
+        radial-gradient(ellipse 700px 360px at 0% 100%, rgba(201,138,75,0.10) 0%, transparent 60%),
+        linear-gradient(180deg, #f1f6ec 0%, #fbfaf6 100%);
+      border-top: 1px solid var(--border-soft);
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    /* ---------- Teaser ---------- */
+    .teaser {
+      padding: 0 1.5rem 1.5rem;
+      max-width: 1100px;
+      margin: -42px auto 0;
+      position: relative;
+      z-index: 2;
+    }
+    .teaser-card {
+      background: #fff;
+      border-radius: var(--radius-xl);
+      padding: 22px 22px 18px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+    }
+    .teaser-card img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: var(--radius-lg);
+      background: #f3f7ee;
+    }
+    .teaser-card .caption {
+      font-size: 0.94rem;
+      color: var(--ink-soft);
+      text-align: center;
+      margin-top: 16px;
+      max-width: 880px;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.65;
+    }
+    .teaser-card .caption strong { color: var(--leaf-1); }
+
+    /* ---------- Abstract ---------- */
+    .abstract-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      padding: 40px 44px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+    .abstract-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 5px;
+      background: linear-gradient(180deg, var(--leaf-3) 0%, var(--leaf-1) 100%);
+    }
+    .abstract-card .label {
+      font-family: 'Google Sans', sans-serif;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--leaf-2);
+      margin-bottom: 10px;
+    }
+    .abstract-card p {
+      line-height: 1.85;
+      color: #2c3a32;
+      font-size: 1.03rem;
+      margin: 0 0 1rem;
+      text-align: justify;
+    }
+    .abstract-card p:last-child { margin-bottom: 0; }
+    .pop {
+      background: linear-gradient(135deg, var(--leaf-3), var(--leaf-1));
+      color: #fff;
+      padding: 1px 9px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.96em;
+      white-space: nowrap;
+    }
+    .pop-warm {
+      background: linear-gradient(135deg, var(--earth-2), var(--earth-1));
+      color: #fff;
+      padding: 1px 9px;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 0.96em;
+      white-space: nowrap;
+    }
+
+    /* ---------- Challenge cards ---------- */
+    .gap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    .gap-card {
+      background: #fff;
+      border-radius: var(--radius-md);
+      padding: 28px 26px 26px;
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+    .gap-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(47,122,62,0.40);
+    }
+    .gap-card .gap-num {
+      position: absolute;
+      top: 16px; right: 22px;
+      font-family: 'Fraunces', serif;
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1;
+      color: rgba(47,122,62,0.16);
+      letter-spacing: -0.03em;
+    }
+    .gap-card .gap-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, #e7f1de 0%, #cfe1c0 100%);
+      color: var(--leaf-1);
+      margin-bottom: 14px;
+      font-size: 1.2rem;
+      box-shadow: inset 0 0 0 1px rgba(47,122,62,0.10);
+    }
+    .gap-card h4 {
+      font-size: 1.08rem;
+      margin: 0 0 10px;
+      color: var(--ink);
+      padding-right: 42px;
+    }
+    .gap-card p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    /* ---------- 3-agent grid ---------- */
+    .agent-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      margin: 16px 0 36px;
+    }
+    .agent-col {
+      border-radius: 22px;
+      padding: 30px 26px 28px;
+      color: #fff;
+      box-shadow: 0 18px 36px rgba(31,42,36,0.18), 0 4px 12px rgba(31,42,36,0.08);
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .agent-col::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(150deg, rgba(255,255,255,0.10) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .agent-col:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 50px rgba(31,42,36,0.22), 0 6px 16px rgba(31,42,36,0.10);
+    }
+    .agent-col .a-tag {
+      font-family: 'Google Sans', sans-serif;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      opacity: 0.85;
+      margin-bottom: 8px;
+    }
+    .agent-col .a-icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      background: rgba(255,255,255,0.18);
+      display: grid; place-items: center;
+      font-size: 1.4rem;
+      margin-bottom: 16px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.20);
+    }
+    .agent-col h3 {
+      font-size: 1.22rem;
+      font-weight: 700;
+      margin-bottom: 18px;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+    .agent-col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .agent-col li {
+      background: rgba(255,255,255,0.16);
+      padding: 10px 14px;
+      border-radius: 10px;
+      margin-bottom: 8px;
+      font-size: 0.92rem;
+      line-height: 1.45;
+      border: 1px solid rgba(255,255,255,0.18);
+      backdrop-filter: blur(4px);
+    }
+    .agent-col li:last-child { margin-bottom: 0; }
+    .agent-col li b { color: #fff; font-weight: 700; }
+    .agent-exp { background: linear-gradient(150deg, #4f9d5a 0%, #2f7a3e 60%, #1f5e34 100%); }
+    .agent-env { background: linear-gradient(150deg, #4ea6c9 0%, #2f8aa6 55%, #205c77 100%); }
+    .agent-eth { background: linear-gradient(150deg, #d97743 0%, #b25a2c 55%, #8c5a36 100%); }
+
+    /* ---------- Coordination pipeline ---------- */
+    .pipeline-wrap {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 28px 30px;
+      box-shadow: var(--shadow-sm);
+    }
+    .pipeline-wrap h4 {
+      text-align: center;
+      font-size: 1.05rem;
+      margin: 0 0 18px;
+      color: var(--ink);
+    }
+    .pipeline-wrap h4 i { color: var(--leaf-2); margin-right: 8px; }
+    .pipeline {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .pill {
+      padding: 9px 16px;
+      border-radius: 999px;
+      background: #fafdf6;
+      border: 1.5px solid var(--border);
+      font-family: 'Google Sans', sans-serif;
+      font-weight: 600;
+      font-size: 0.86rem;
+      color: var(--ink);
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+    .pill:hover {
+      transform: translateY(-2px);
+      border-color: var(--leaf-2);
+      color: var(--leaf-1);
+    }
+    .pill-end {
+      background: linear-gradient(135deg, var(--leaf-3), var(--leaf-1));
+      color: #fff;
+      border-color: transparent;
+      padding: 10px 20px;
+      box-shadow: 0 8px 20px rgba(47,122,62,0.30);
+    }
+    .pill-end:hover { color: #fff; box-shadow: 0 10px 24px rgba(47,122,62,0.40); }
+    .pipe-arrow {
+      color: var(--ink-faint);
+      font-size: 0.9rem;
+    }
+
+    /* ---------- Method figures ---------- */
+    .method-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+      margin-bottom: 30px;
+    }
+    .fig-card {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+      display: flex;
+      flex-direction: column;
+    }
+    .fig-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: rgba(47,122,62,0.35);
+      transform: translateY(-2px);
+    }
+    .fig-card .fig-frame {
+      flex: 1;
+      display: grid;
+      place-items: center;
+      background: #f5f9ef;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      min-height: 240px;
+    }
+    .fig-card img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    .fig-card .caption {
+      font-size: 0.93rem;
+      color: var(--ink-soft);
+      margin-top: 16px;
+      line-height: 1.6;
+    }
+    .fig-card .caption b { color: var(--leaf-1); }
+
+    .method-prose {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 28px 32px;
+      box-shadow: var(--shadow-sm);
+      color: var(--ink-soft);
+      line-height: 1.75;
+    }
+    .method-prose p { margin: 0 0 1rem; }
+    .method-prose p:last-child { margin-bottom: 0; }
+    .method-prose code {
+      background: #f1f5ea;
+      color: var(--leaf-1);
+      padding: 1px 7px;
+      border-radius: 5px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.86em;
+    }
+
+    /* ---------- Findings stat tiles ---------- */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 36px;
+    }
+    .stat {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 26px 22px 22px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .stat:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(47,122,62,0.35);
+    }
+    .stat::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; top: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--leaf-3), var(--leaf-1));
+    }
+    .stat .stat-label {
+      font-family: 'Google Sans', sans-serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--ink-faint);
+      margin-bottom: 12px;
+    }
+    .stat .stat-value {
+      font-family: 'Fraunces', serif;
+      font-weight: 700;
+      font-size: 2.4rem;
+      line-height: 1;
+      color: var(--leaf-1);
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .stat .stat-value .unit {
+      font-size: 1rem;
+      color: var(--ink-faint);
+      font-family: 'Google Sans', sans-serif;
+      font-weight: 500;
+    }
+    .stat .stat-shift {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      font-weight: 500;
+    }
+    .stat .stat-shift .arrow {
+      color: var(--leaf-2);
+      font-weight: 700;
+      margin: 0 4px;
+    }
+    .stat.terra::after { background: linear-gradient(90deg, var(--earth-2), var(--earth-1)); }
+    .stat.terra .stat-value { color: var(--earth-1); }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+    }
+    .insight {
+      background: #fff;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      padding: 28px 26px 26px;
+      box-shadow: var(--shadow-sm);
+      transition: var(--transition);
+    }
+    .insight:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: rgba(47,122,62,0.35);
+    }
+    .insight .ico {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: grid; place-items: center;
+      background: linear-gradient(135deg, #e7f1de, #cfe1c0);
+      color: var(--leaf-1);
+      margin-bottom: 14px;
+      font-size: 1.2rem;
+    }
+    .insight h4 {
+      font-size: 1.06rem;
+      margin: 0 0 10px;
+    }
+    .insight p {
+      margin: 0;
+      color: var(--ink-soft);
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    .insight blockquote {
+      margin: 12px 0 0;
+      padding: 12px 14px;
+      border-left: 3px solid var(--leaf-3);
+      background: #f6fbef;
+      border-radius: 8px;
+      color: var(--leaf-1);
+      font-style: italic;
+      font-size: 0.92rem;
+      line-height: 1.6;
+    }
+
+    /* ---------- Live demo strip ---------- */
+    .demo-strip {
+      max-width: 1040px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, #1f5e34 0%, #2f7a3e 50%, #4f9d5a 100%);
+      border-radius: var(--radius-xl);
+      padding: 44px 48px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      box-shadow: 0 24px 48px rgba(31,94,52,0.30), 0 6px 18px rgba(31,42,36,0.10);
+      position: relative;
+      overflow: hidden;
+    }
+    .demo-strip::before {
+      content: '';
+      position: absolute;
+      right: -60px; top: -40px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 70%);
+      pointer-events: none;
+    }
+    .demo-strip h3 {
+      font-family: 'Fraunces', serif;
+      font-size: 1.65rem;
+      color: #fff;
+      margin: 0 0 8px;
+      line-height: 1.2;
+    }
+    .demo-strip p {
+      margin: 0;
+      color: rgba(255,255,255,0.88);
+      font-size: 0.98rem;
+      max-width: 540px;
+      line-height: 1.6;
+    }
+    .demo-strip .cta-launch {
+      flex-shrink: 0;
+      background: #fff;
+      color: var(--leaf-1);
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-family: 'Google Sans', sans-serif;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.16);
+      transition: var(--transition);
+    }
+    .demo-strip .cta-launch:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.22);
+      color: var(--leaf-1);
+    }
+
+    /* ---------- BibTeX ---------- */
+    .bibtex-card {
+      max-width: 920px;
+      margin: 0 auto;
+      background: #1c2a22;
+      color: #d8e8d4;
+      border-radius: var(--radius-lg);
+      padding: 26px 30px;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      overflow: hidden;
+    }
+    .bibtex-card::before {
+      content: '';
+      position: absolute;
+      left: 0; right: 0; top: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--leaf-3), var(--earth-2));
+    }
+    .bibtex-card pre {
+      margin: 0;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.86rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #d8e8d4;
+    }
+    .bibtex-card .bib-key { color: #d29759; }
+    .bibtex-card .bib-field { color: #79a36a; }
+    .bibtex-card .bib-string { color: #d8e8d4; }
+    .bibtex-card .copy-btn {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-family: 'Google Sans', sans-serif;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+    .bibtex-card .copy-btn:hover {
+      background: rgba(255,255,255,0.20);
+      border-color: rgba(255,255,255,0.32);
+    }
+
+    /* ---------- Footer ---------- */
+    .footer {
+      padding: 36px 24px 40px;
+      text-align: center;
+      color: var(--ink-faint);
+      font-size: 0.9rem;
+      background: #f6faf2;
+      border-top: 1px solid var(--border-soft);
+    }
+    .footer a { color: var(--leaf-1); text-decoration: none; }
+    .footer a:hover { color: var(--leaf-2); }
+    .footer .heart { color: var(--earth-2); }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 880px) {
+      .gap-grid,
+      .agent-grid,
+      .stat-grid,
+      .insight-grid,
+      .method-grid {
+        grid-template-columns: 1fr;
+      }
+      .stat-grid { grid-template-columns: repeat(2, 1fr); }
+      .abstract-card { padding: 28px 24px; }
+      .demo-strip {
+        flex-direction: column;
+        text-align: center;
+        padding: 32px 28px;
+      }
+      .nav-links { gap: 0; }
+      .nav-links a { padding: 5px 8px; font-size: 0.82rem; }
+      .nav-links a.cta-demo { padding: 5px 12px; }
+      .hero { padding: 56px 20px 50px; }
+      .section { padding: 4rem 1.25rem; }
+    }
+    @media (max-width: 520px) {
+      .stat-grid { grid-template-columns: 1fr; }
+      .teaser { margin-top: -28px; }
+      .teaser-card { padding: 14px 14px 12px; }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ============================ TOP NAV ============================ -->
+<nav class="topnav">
+  <div class="nav-inner">
+    <a href="#top" class="brand">
+      <span class="brand-mark"><i class="fa-solid fa-seedling"></i></span>
+      CultivAgents
+    </a>
+    <div class="nav-links">
+      <a href="#abstract">Abstract</a>
+      <a href="#system">System</a>
+      <a href="#method">Method</a>
+      <a href="#findings">Findings</a>
+      <a href="#cite">Cite</a>
+      <a href="https://cultivagents.onrender.com/" target="_blank" rel="noopener" class="cta-demo">
+        <i class="fa-solid fa-play"></i> Try It
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============================ HERO ============================ -->
+<header class="hero" id="top">
+  <div class="hero-inner">
+    <span class="badge">
+      <span class="dot"></span>
+      Personalized Multi-Agent AI · Food Sovereignty
+    </span>
+
+    <h1>
+      <span class="accent">CultivAgents</span><br>
+      Cultivating Personalized Multi-Agent Systems<br>
+      Toward <span class="subtitle-em">Food&nbsp;Sovereignty</span>
+    </h1>
+
+    <p class="tagline">
+      A care-centered, three-persona LLM ecosystem that grounds gardening guidance in
+      your <b>experience</b>, your <b>environment</b>, and your <b>culture</b>.
+    </p>
+
+    <div class="authors">
+      <span class="author-block"><a href="https://hello-diana.github.io/">Yiyang Wang</a><sup>*</sup></span>·
+      <span class="author-block"><a href="https://moireilly.com/">Moeiini Reilly</a><sup>*</sup></span>·
+      <span class="author-block"><a href="https://www.linkedin.com/in/britney-johnson-8b904555">Britney Johnson</a></span>·
+      <span class="author-block"><a href="https://www.linkedin.com/in/kefeiyan">Kefei Yan</a></span>·
+      <span class="author-block"><a href="https://a-cabral.github.io/">Alex Cabral</a></span>·
+      <span class="author-block"><a href="https://josiahhester.com/">Josiah Hester</a></span>
+    </div>
+    <div class="affil-line">
+      <i class="fa-solid fa-location-dot gt-pin"></i>
+      Georgia Institute of Technology · Atlanta, GA
+    </div>
+    <div class="equal-line"><sup>*</sup>Equal contribution</div>
+
+    <div class="cta-row">
+      <!-- TODO: replace href with paper PDF URL when available -->
+      <a class="cta cta-paper" href="#" target="_blank" rel="noopener">
+        <i class="fa-solid fa-file-pdf"></i> Paper
+      </a>
+      <!-- TODO: replace href with arXiv URL when available -->
+      <a class="cta cta-arxiv" href="#" target="_blank" rel="noopener">
+        <i class="fa-solid fa-scroll"></i> arXiv
+      </a>
+      <!-- TODO: replace href with GitHub URL when available -->
+      <a class="cta cta-code" href="#" target="_blank" rel="noopener">
+        <i class="fa-brands fa-github"></i> Code
+      </a>
+      <a class="cta cta-demo-hero" href="https://cultivagents.onrender.com/" target="_blank" rel="noopener">
+        <i class="fa-solid fa-leaf"></i> Live Demo
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ============================ TEASER ============================ -->
+<section class="teaser" aria-label="System teaser">
+  <div class="teaser-card">
+    <img src="media/figures/hero.png"
+         alt="CultivAgents teaser figure: three personified agents (Experience, Environmental, Ethnobotanical) coordinating around a gardener with a plant.">
+    <p class="caption">
+      <strong>CultivAgents</strong> coordinates an <em>Experience</em>, an <em>Environmental</em>, and an
+      <em>Ethnobotanical</em> agent to deliver gardening guidance that is actionable, locally grounded,
+      and culturally meaningful.
+    </p>
+  </div>
+</section>
+
+<!-- ============================ ABSTRACT ============================ -->
+<section class="section" id="abstract">
+  <div class="container">
+    <div class="section-eyebrow">Abstract</div>
+    <h2 class="section-title">From transactional Q&amp;A to a <em>compassionate companion</em></h2>
+
+    <div class="abstract-card">
+      <div class="label">TL;DR</div>
+      <p>
+        Gardening has become a restorative practice that enhances well-being and personal agency by
+        providing a sense of accomplishment through the hands-on nurturing of growth. Digital tools have
+        been created to aid in assisting this practice. However, they fail to account for the users'
+        diverse experience levels, environmental context and cultural backgrounds.
+      </p>
+      <p>
+        This paper introduces <span class="pop">CultivAgents</span>, a <b>multi-agent system</b>
+        designed to provide personalized, socio-culturally grounded gardening support. Grounded in
+        <em>ethics of care</em>, our system moves beyond transactional data delivery to foster a strong
+        personal and cultural connection between the user and their environment by having an agent
+        converse with the user on how to care for their plants.
+      </p>
+      <p>
+        We evaluate the system through three user studies — a formative study with native Hawaiian
+        gardening experts, a workshop with HCI researchers, and a design workshop with members of a
+        local community garden. The formative study provided insights into the efficacy of the
+        cultural agent; the feedback from the HCI researchers was valuable in assessing the overall
+        system design; and the design workshop with the community garden helps to support existing
+        interest of gardening and measure potential enhancement of the gardening experience. Overall,
+        these user studies were conducted to evaluate the efficacy of the LLM system and measure its
+        impact on enhancing one's personalized gardening experience.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ THE GAP ============================ -->
+<section class="section alt-bg">
+  <div class="container">
+    <div class="section-eyebrow">Motivation</div>
+    <h2 class="section-title">The <em>knowledge–action gap</em> in digital gardening</h2>
+    <p class="section-lead">
+      Roughly half of new food gardeners quit after their first season. Today's plant-care chatbots
+      deliver portable advice, but they collapse three very different kinds of expertise into one
+      generic voice.
+    </p>
+
+    <div class="gap-grid">
+      <div class="gap-card">
+        <div class="gap-num">01</div>
+        <div class="gap-icon"><i class="fa-solid fa-comment-dots"></i></div>
+        <h4>Generic by default</h4>
+        <p>
+          Off-the-shelf LLMs hand out the same advice to a first-timer in a Brooklyn apartment and a
+          fifth-generation farmer — wasting effort and eroding trust when it doesn't fit the ground.
+        </p>
+      </div>
+      <div class="gap-card">
+        <div class="gap-num">02</div>
+        <div class="gap-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+        <h4>No local grounding</h4>
+        <p>
+          Soil, frost dates, shade canopies, pest ecologies — ungrounded advice plausibly hallucinates
+          recommendations that are wrong for the gardener's actual climate and lease constraints.
+        </p>
+      </div>
+      <div class="gap-card">
+        <div class="gap-num">03</div>
+        <div class="gap-icon"><i class="fa-solid fa-people-group"></i></div>
+        <h4>Heritage left at the door</h4>
+        <p>
+          Displaced and diaspora gardeners lose more than logistics — they lose tacit knowledge.
+          Generic chatbots can't carry the cultural memory that makes growing food meaningful.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ THREE AGENTS ============================ -->
+<section class="section" id="system">
+  <div class="container">
+    <div class="section-eyebrow">System</div>
+    <h2 class="section-title">Three agents, <em>one situated conversation</em></h2>
+    <p class="section-lead">
+      Each agent owns a complementary dimension of personalization. A lightweight LLM selector routes
+      every user turn to the right voices, and the agents respond in short, color-coded rounds.
+    </p>
+
+    <div class="agent-grid">
+      <div class="agent-col agent-exp">
+        <div class="a-tag">Persona 01</div>
+        <div class="a-icon"><i class="fa-solid fa-user-graduate"></i></div>
+        <h3>Experience Agent</h3>
+        <ul>
+          <li><b>Tunes complexity</b> to novice or veteran gardeners</li>
+          <li>Step-by-step guidance vs. cultivar-level technical depth</li>
+          <li>Translates jargon to bypass intimidation</li>
+        </ul>
+      </div>
+      <div class="agent-col agent-env">
+        <div class="a-tag">Persona 02</div>
+        <div class="a-icon"><i class="fa-solid fa-sun-plant-wilt"></i></div>
+        <h3>Environmental Agent</h3>
+        <ul>
+          <li><b>Hyperlocal</b> climate, frost dates &amp; soil context</li>
+          <li>Seasonality grounded in the current month</li>
+          <li>Surfaces extension resources for the user's region</li>
+        </ul>
+      </div>
+      <div class="agent-col agent-eth">
+        <div class="a-tag">Persona 03</div>
+        <div class="a-icon"><i class="fa-solid fa-book-open"></i></div>
+        <h3>Ethnobotanical Agent</h3>
+        <ul>
+          <li>Historical, cultural &amp; medicinal plant lore</li>
+          <li>Distinguishes traditional vs. scientifically validated uses</li>
+          <li>Anchors plants to <b>heritage and community</b></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pipeline-wrap">
+      <h4><i class="fa-solid fa-route"></i> Per-turn coordination via AutoGen <code style="background:#f1f5ea;color:var(--leaf-1);padding:1px 6px;border-radius:5px;font-family:'JetBrains Mono',monospace;font-size:0.88em;">SelectorGroupChat</code></h4>
+      <div class="pipeline">
+        <span class="pill">User profile&nbsp;⟨e, ℓ, m, c⟩</span>
+        <span class="pipe-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+        <span class="pill">Selector LLM</span>
+        <span class="pipe-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+        <span class="pill">Eligible agents</span>
+        <span class="pipe-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+        <span class="pill">3-message round</span>
+        <span class="pipe-arrow"><i class="fa-solid fa-arrow-right"></i></span>
+        <span class="pill pill-end"><i class="fa-solid fa-leaf"></i> Coordinated reply</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ METHOD ============================ -->
+<section class="section deep-bg" id="method">
+  <div class="container">
+    <div class="section-eyebrow">Inside the System</div>
+    <h2 class="section-title">A WebSocket-streamed, <em>color-coded</em> chat</h2>
+    <p class="section-lead">
+      On first visit, a short onboarding modal collects four inputs that personalize every agent's
+      system prompt for the rest of the session.
+    </p>
+
+    <div class="method-grid">
+      <div class="fig-card">
+        <div class="fig-frame">
+          <img src="media/figures/onboarding.png"
+               alt="Onboarding modal collecting gardening experience, location, current month, and cultural background.">
+        </div>
+        <p class="caption">
+          <b>Onboarding.</b> Four inputs — experience level, location, current month, and cultural
+          background — feed every agent's system prompt as structured context.
+        </p>
+      </div>
+      <div class="fig-card">
+        <div class="fig-frame">
+          <img src="media/figures/system-mockup.png"
+               alt="CultivAgents chat interface showing color-coded turns from Experience (green), Environmental (blue), and Ethnobotanical (orange) agents.">
+        </div>
+        <p class="caption">
+          <b>Color-coded turns.</b> Green (Experience), blue (Environmental), orange (Ethnobotanical),
+          streamed live over WebSocket with Markdown rendering and full-transcript export.
+        </p>
+      </div>
+    </div>
+
+    <div class="method-prose">
+      <p>
+        Each agent is a GPT-4o-backed AutoGen <code>AssistantAgent</code> with a domain-specific
+        persona and a templated system prompt that includes the user profile. At each turn within a
+        response round, an LLM selector chooses the next eligible speaker (excluding the previous
+        speaker to ensure diverse perspectives). Each round terminates after <b>k=3</b> messages and
+        the conversation history resets to prevent unbounded context growth.
+      </p>
+      <p>
+        The frontend is a single-page web app that talks to a FastAPI backend over a persistent
+        WebSocket. The system is containerized via Docker and ships as a public,
+        <a href="https://cultivagents.onrender.com/" target="_blank" rel="noopener">try-it-now demo</a>.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FINDINGS ============================ -->
+<section class="section" id="findings">
+  <div class="container">
+    <div class="section-eyebrow">Findings</div>
+    <h2 class="section-title">From <em>interest</em> to <em>situated action</em></h2>
+    <p class="section-lead">
+      Across a formative study with values-aligned domain experts and HCI researchers, plus a design
+      workshop with community gardeners, we observed measurable lifts in confidence, motivation, and
+      trust — anchored to <i>hyperlocal</i> grounding.
+    </p>
+
+    <div class="stat-grid">
+      <div class="stat">
+        <div class="stat-label">Confidence ↑</div>
+        <div class="stat-value">3.60<span class="unit">/ 5</span></div>
+        <div class="stat-shift">pre 3.00 <span class="arrow">→</span> post 3.60</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Trust to Act ↑</div>
+        <div class="stat-value">4.00<span class="unit">/ 5</span></div>
+        <div class="stat-shift">pre 3.20 <span class="arrow">→</span> post 4.00</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">Learned new info</div>
+        <div class="stat-value">4.60<span class="unit">/ 5</span></div>
+        <div class="stat-shift">multi-agent &gt; single chatbot (4.60)</div>
+      </div>
+      <div class="stat terra">
+        <div class="stat-label">SUS Usability</div>
+        <div class="stat-value">84.5<span class="unit">/ 100</span></div>
+        <div class="stat-shift">well above the &ldquo;good&rdquo; threshold of 68</div>
+      </div>
+    </div>
+
+    <div class="insight-grid">
+      <div class="insight">
+        <div class="ico"><i class="fa-solid fa-location-crosshairs"></i></div>
+        <h4>Hyperlocal anchoring drove trust</h4>
+        <p>
+          Neighborhood-scale soil and climate detail was the single biggest lever on confidence —
+          moving plants from a digital abstraction to a situated living entity.
+        </p>
+        <blockquote>
+          Environmental Agent: <b>4.80/5</b> location relevance · <b>4.40/5</b> seasonal accuracy.
+        </blockquote>
+      </div>
+      <div class="insight">
+        <div class="ico"><i class="fa-solid fa-compass"></i></div>
+        <h4>Latent heritage discovery</h4>
+        <p>
+          Even users who did <i>not</i> arrive with an explicit cultural profile used the Ethnobotanical
+          Agent to explore ancestral knowledge as a lens for urban food production.
+        </p>
+        <blockquote>
+          Ethnobotanical Agent: <b>4.20/5</b> cultural relevance · <b>4.00/5</b> authenticity &amp; respect.
+        </blockquote>
+      </div>
+      <div class="insight">
+        <div class="ico"><i class="fa-solid fa-handshake-angle"></i></div>
+        <h4>Trusted advisor &gt; companion (yet)</h4>
+        <p>
+          Trust and care emerged from relevant, respectful, actionable guidance — but full
+          <i>companionship</i> will require memory, continuity, and longer-horizon care.
+        </p>
+        <blockquote>
+          Companionship rating: <b>2.40/5</b> &nbsp;·&nbsp; A clear roadmap for continuity.
+        </blockquote>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ LIVE DEMO STRIP ============================ -->
+<section class="section alt-bg">
+  <div class="container">
+    <div class="demo-strip">
+      <div>
+        <h3><i class="fa-solid fa-leaf" style="margin-right:8px;opacity:0.9;"></i>Try CultivAgents in your browser.</h3>
+        <p>
+          Onboard with your location, month, and cultural background — and watch three agents
+          coordinate guidance for what you're trying to grow. No install, no signup.
+        </p>
+      </div>
+      <a href="https://cultivagents.onrender.com/" target="_blank" rel="noopener" class="cta-launch">
+        Launch the demo <i class="fa-solid fa-arrow-up-right-from-square"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ CITE ============================ -->
+<section class="section" id="cite">
+  <div class="container">
+    <div class="section-eyebrow">Cite</div>
+    <h2 class="section-title">BibTeX</h2>
+    <div class="bibtex-card">
+      <button type="button" class="copy-btn" onclick="copyBibtex(this)">
+        <i class="fa-regular fa-copy"></i> Copy
+      </button>
+<pre id="bibtex"><span class="bib-key">@article</span>{cultivagents2026,
+  <span class="bib-field">title</span>   = <span class="bib-string">{CultivAgents: Cultivating Personalized Multi-Agent Systems Towards Food Sovereignty}</span>,
+  <span class="bib-field">author</span>  = <span class="bib-string">{Wang, Yiyang and Reilly, Moeiini and Johnson, Britney and Yan, Kefei and Cabral, Alex and Hester, Josiah}</span>,
+  <span class="bib-field">year</span>    = <span class="bib-string">{2026}</span>,
+  <span class="bib-field">note</span>    = <span class="bib-string">{Preprint}</span>,
+  <span class="bib-field">url</span>     = <span class="bib-string">{https://cultivagents.onrender.com/}</span>
+}</pre>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FOOTER ============================ -->
+<footer class="footer">
+  <p>
+    Built with <span class="heart"><i class="fa-solid fa-seedling"></i></span> at
+    <a href="https://www.gatech.edu/" target="_blank" rel="noopener">Georgia Tech</a>.
+  </p>
+</footer>
+
+<script>
+  function copyBibtex(btn) {
+    const text = document.getElementById('bibtex').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      const old = btn.innerHTML;
+      btn.innerHTML = '<i class="fa-solid fa-check"></i> Copied';
+      setTimeout(() => { btn.innerHTML = old; }, 1600);
+    });
+  }
+</script>
+
+</body>
+</html>
